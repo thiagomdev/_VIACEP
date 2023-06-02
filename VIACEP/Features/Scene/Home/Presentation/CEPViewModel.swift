@@ -1,7 +1,7 @@
 import Foundation
 
 protocol CepViewModeling {
-    func errorInvalid(_ cep: String)
+    func errorInvalidCep(_ errorCep: String)
     func fetchCEP(_ cep: String, completion: @escaping (Result<CEP, Error>) -> Void)
 }
 
@@ -16,7 +16,7 @@ final class CEPViewModel {
         self.service = service
     }
     
-    func errorInvalid(_ invalidCep: String) {
+    func errorInvalidCep(_ errorCep: String) {
         if cep.cep == nil {
             invalidCepAlert?()
         }

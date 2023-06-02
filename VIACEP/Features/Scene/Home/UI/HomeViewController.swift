@@ -26,6 +26,15 @@ final class HomeViewController: UIViewController {
         return element
     }()
     
+    private lazy var stackView: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.alignment = .leading
+        stack.spacing = 8
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
+    
     private lazy var bairroLabel = makeLabel()
     private lazy var logradouroLabel = makeLabel()
     private lazy var localidadeLabel = makeLabel()
@@ -51,7 +60,6 @@ final class HomeViewController: UIViewController {
         buildViews()
         pin()
         configureUI()
-        showCepError()
     }
     
     // MARK: - Selectors
@@ -59,15 +67,6 @@ final class HomeViewController: UIViewController {
     private func searchCep() {
         guard let cep = inputedCepTextField.text else { return }
         fetchedCEP(cep)
-        viewModel.errorInvalid(cep)
-    }
-    
-    private func showCepError() {
-        viewModel.invalidCepAlert = { [weak self] in
-            let alert = UIAlertController(title: "ALERTA!", message: "CEP inválido. Por favor,\ncoloque um CEP válido.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            self?.present(alert, animated: true)
-        }
     }
 }
 // MARK: - HomeViewControllerDisplaying
@@ -94,9 +93,7 @@ extension HomeViewController: HomeViewControllerDisplaying {
 // MARK: - Layout Configuration
 extension HomeViewController {
     func buildViews() {
-        view.add(
-            subviews: inputedCepTextField,
-            searchCepButton,
+        stackView.addStacks(
             bairroLabel,
             logradouroLabel,
             localidadeLabel,
@@ -105,6 +102,13 @@ extension HomeViewController {
             giaLabel,
             dddLabel,
             siafiLabel
+        )
+        
+        view.add(
+            subviews:
+            inputedCepTextField,
+            searchCepButton,
+            stackView
         )
     }
     
@@ -119,29 +123,9 @@ extension HomeViewController {
             searchCepButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Layout.Padding.genericPadding),
             searchCepButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Layout.Padding.genericPadding),
             
-            bairroLabel.topAnchor.constraint(equalTo: searchCepButton.bottomAnchor, constant: Layout.Padding.genericPadding),
-            bairroLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Layout.Padding.genericPadding),
-            
-            logradouroLabel.topAnchor.constraint(equalTo: bairroLabel.bottomAnchor, constant: Layout.Padding.genericValue),
-            logradouroLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Layout.Padding.genericPadding),
-            
-            localidadeLabel.topAnchor.constraint(equalTo: logradouroLabel.bottomAnchor, constant: Layout.Padding.genericValue),
-            localidadeLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Layout.Padding.genericPadding),
-            
-            ufLabel.topAnchor.constraint(equalTo: localidadeLabel.bottomAnchor, constant: Layout.Padding.genericValue),
-            ufLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Layout.Padding.genericPadding),
-            
-            ibgeLabel.topAnchor.constraint(equalTo: ufLabel.bottomAnchor, constant: Layout.Padding.genericValue),
-            ibgeLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Layout.Padding.genericPadding),
-            
-            giaLabel.topAnchor.constraint(equalTo: ibgeLabel.bottomAnchor, constant: Layout.Padding.genericValue),
-            giaLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Layout.Padding.genericPadding),
-            
-            dddLabel.topAnchor.constraint(equalTo: giaLabel.bottomAnchor, constant: Layout.Padding.genericValue),
-            dddLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Layout.Padding.genericPadding),
-            
-            siafiLabel.topAnchor.constraint(equalTo: dddLabel.bottomAnchor, constant: Layout.Padding.genericValue),
-            siafiLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Layout.Padding.genericPadding),
+            stackView.topAnchor.constraint(equalTo: searchCepButton.bottomAnchor, constant: Layout.Padding.genericPadding),
+            stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Layout.Padding.genericPadding),
+            stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Layout.Padding.genericPadding),
         ])
     }
     
@@ -154,9 +138,17 @@ extension HomeViewController {
 extension HomeViewController {
     private func makeLabel() -> UILabel {
         let element = UILabel()
-        element.font = .systemFont(ofSize: 14, weight: .regular)
+        element.font = .systemFont(ofSize: 16, weight: .regular)
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
+    }
+    
+    private func showCepError() {
+        viewModel.invalidCepAlert = { [weak self] in
+            let alert = UIAlertController(title: "ALERTA!", message: "CEP inválido. Por favor,\ncoloque um CEP válido.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            self?.present(alert, animated: true)
+        }
     }
 }
 

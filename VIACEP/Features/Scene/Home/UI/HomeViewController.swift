@@ -5,6 +5,7 @@ protocol HomeViewControllerDisplaying {
 }
 
 final class HomeViewController: UIViewController {
+    fileprivate enum Layout { }
     // MARK: - Properties
     private let viewModel: CEPViewModel
     
@@ -110,38 +111,37 @@ extension HomeViewController {
     func pin() {
         NSLayoutConstraint.activate([
             inputedCepTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            inputedCepTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            inputedCepTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            inputedCepTextField.heightAnchor.constraint(equalToConstant: 48),
+            inputedCepTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Layout.Padding.genericPadding),
+            inputedCepTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Layout.Padding.genericPadding),
+            inputedCepTextField.heightAnchor.constraint(equalToConstant: Layout.Padding.genericHeight),
             
-            searchCepButton.topAnchor.constraint(equalTo: inputedCepTextField.bottomAnchor, constant: 16),
-            searchCepButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            searchCepButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            searchCepButton.topAnchor.constraint(equalTo: inputedCepTextField.bottomAnchor, constant: Layout.Padding.genericPadding),
+            searchCepButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Layout.Padding.genericPadding),
+            searchCepButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Layout.Padding.genericPadding),
             
-            bairroLabel.topAnchor.constraint(equalTo: searchCepButton.bottomAnchor, constant: 16),
-            bairroLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            bairroLabel.topAnchor.constraint(equalTo: searchCepButton.bottomAnchor, constant: Layout.Padding.genericPadding),
+            bairroLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Layout.Padding.genericPadding),
             
-            logradouroLabel.topAnchor.constraint(equalTo: bairroLabel.bottomAnchor, constant: 4),
-            logradouroLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            logradouroLabel.topAnchor.constraint(equalTo: bairroLabel.bottomAnchor, constant: Layout.Padding.genericValue),
+            logradouroLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Layout.Padding.genericPadding),
             
+            localidadeLabel.topAnchor.constraint(equalTo: logradouroLabel.bottomAnchor, constant: Layout.Padding.genericValue),
+            localidadeLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Layout.Padding.genericPadding),
             
-            localidadeLabel.topAnchor.constraint(equalTo: logradouroLabel.bottomAnchor, constant: 4),
-            localidadeLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            ufLabel.topAnchor.constraint(equalTo: localidadeLabel.bottomAnchor, constant: Layout.Padding.genericValue),
+            ufLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Layout.Padding.genericPadding),
             
-            ufLabel.topAnchor.constraint(equalTo: localidadeLabel.bottomAnchor, constant: 4),
-            ufLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            ibgeLabel.topAnchor.constraint(equalTo: ufLabel.bottomAnchor, constant: Layout.Padding.genericValue),
+            ibgeLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Layout.Padding.genericPadding),
             
-            ibgeLabel.topAnchor.constraint(equalTo: ufLabel.bottomAnchor, constant: 4),
-            ibgeLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            giaLabel.topAnchor.constraint(equalTo: ibgeLabel.bottomAnchor, constant: Layout.Padding.genericValue),
+            giaLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Layout.Padding.genericPadding),
             
-            giaLabel.topAnchor.constraint(equalTo: ibgeLabel.bottomAnchor, constant: 4),
-            giaLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            dddLabel.topAnchor.constraint(equalTo: giaLabel.bottomAnchor, constant: Layout.Padding.genericValue),
+            dddLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Layout.Padding.genericPadding),
             
-            dddLabel.topAnchor.constraint(equalTo: giaLabel.bottomAnchor, constant: 4),
-            dddLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            
-            siafiLabel.topAnchor.constraint(equalTo: dddLabel.bottomAnchor, constant: 4),
-            siafiLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            siafiLabel.topAnchor.constraint(equalTo: dddLabel.bottomAnchor, constant: Layout.Padding.genericValue),
+            siafiLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Layout.Padding.genericPadding),
         ])
     }
     
@@ -157,5 +157,13 @@ extension HomeViewController {
         element.font = .systemFont(ofSize: 14, weight: .regular)
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
+    }
+}
+
+private extension HomeViewController.Layout {
+    enum Padding {
+        static let genericPadding: CGFloat = 16
+        static let genericValue: CGFloat = 4
+        static let genericHeight: CGFloat = 48
     }
 }

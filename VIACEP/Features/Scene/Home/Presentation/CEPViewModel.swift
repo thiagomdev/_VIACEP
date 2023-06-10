@@ -20,6 +20,7 @@ final class CEPViewModel {
         if cep.cep == nil {
             invalidCepAlert?()
         }
+        completion()
     }
 }
 

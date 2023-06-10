@@ -11,13 +11,16 @@ final class HomeViewController: UIViewController {
     
     // MARK: - Elements
     private lazy var inputedCepTextField: UITextField = {
-        let element = UITextField()
-        element.placeholder = "CEP"
-        element.borderStyle = .roundedRect
-        element.translatesAutoresizingMaskIntoConstraints = false
-        return element
+        let textField = UITextField()
+        textField.placeholder = "CEP"
+        textField.borderStyle = .roundedRect
+        textField.delegate = self
+        textField.returnKeyType = .done
+        textField.clearButtonMode = .whileEditing
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
     }()
-    
+
     private lazy var searchCepButton: UIButton = {
         let element = UIButton(type: .system)
         element.setTitle("search cep", for: .normal)
@@ -114,23 +117,78 @@ extension HomeViewController {
     
     func pin() {
         NSLayoutConstraint.activate([
-            inputedCepTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            inputedCepTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Layout.Padding.genericPadding),
-            inputedCepTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Layout.Padding.genericPadding),
-            inputedCepTextField.heightAnchor.constraint(equalToConstant: Layout.Padding.genericHeight),
+            inputedCepTextField.topAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.topAnchor
+            ),
             
-            searchCepButton.topAnchor.constraint(equalTo: inputedCepTextField.bottomAnchor, constant: Layout.Padding.genericPadding),
-            searchCepButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Layout.Padding.genericPadding),
-            searchCepButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Layout.Padding.genericPadding),
+            inputedCepTextField.leadingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+                constant: Layout.Padding.genericPadding
+            ),
             
-            stackView.topAnchor.constraint(equalTo: searchCepButton.bottomAnchor, constant: Layout.Padding.genericPadding),
-            stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Layout.Padding.genericPadding),
-            stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Layout.Padding.genericPadding),
+            inputedCepTextField.trailingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                constant: -Layout.Padding.genericPadding
+            ),
+            
+            inputedCepTextField.heightAnchor.constraint(
+                equalToConstant: Layout.Padding.genericHeight
+            ),
+            
+            searchCepButton.topAnchor.constraint(
+                equalTo: inputedCepTextField.bottomAnchor,
+                constant: Layout.Padding.genericPadding
+            ),
+            
+            searchCepButton.leadingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+                constant: Layout.Padding.genericPadding
+            ),
+            
+            searchCepButton.trailingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                constant: -Layout.Padding.genericPadding
+            ),
+            
+            stackView.topAnchor.constraint(
+                equalTo: searchCepButton.bottomAnchor,
+                constant: Layout.Padding.genericPadding
+            ),
+            
+            stackView.leadingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+                constant: Layout.Padding.genericPadding
+            ),
+            
+            stackView.trailingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                constant: -Layout.Padding.genericPadding
+            ),
         ])
     }
     
     func configureUI() {
         view.backgroundColor = .systemBackground
+    }
+    
+    private func shouldReturn(_ textField: UITextField) -> Bool {
+        if textField.returnKeyType == .done {
+            guard let cep = textField.text else { return false }
+            view.endEditing(textField.text != nil)
+            fetchedCEP(cep)
+        }
+        return textField == inputedCepTextField
+    }
+}
+
+extension HomeViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        shouldReturn(textField)
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        guard let text = textField.text else { return false }
+        return !text.isEmpty
     }
 }
 
@@ -141,14 +199,6 @@ extension HomeViewController {
         element.font = .systemFont(ofSize: 16, weight: .regular)
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
-    }
-    
-    private func showCepError() {
-        viewModel.invalidCepAlert = { [weak self] in
-            let alert = UIAlertController(title: "ALERTA!", message: "CEP inválido. Por favor,\ncoloque um CEP válido.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            self?.present(alert, animated: true)
-        }
     }
 }
 

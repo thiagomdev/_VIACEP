@@ -22,6 +22,7 @@
 		AA513CD629FD7D26008FC7AA /* CEPViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA513CD529FD7D26008FC7AA /* CEPViewModel.swift */; };
 		AA513CEB2A088EC5008FC7AA /* CEPViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA513CEA2A088EC5008FC7AA /* CEPViewModelTests.swift */; };
 		AA8D68E72A16466400925C33 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8D68E62A16466400925C33 /* UIView+Extension.swift */; };
+		AFFB3B102A3A4F9900ABDD68 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFFB3B0F2A3A4F9900ABDD68 /* Coordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		AA513CDB2A088007008FC7AA /* VIACEPTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VIACEPTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA513CEA2A088EC5008FC7AA /* CEPViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEPViewModelTests.swift; sourceTree = "<group>"; };
 		AA8D68E62A16466400925C33 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		AFFB3B0F2A3A4F9900ABDD68 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +134,7 @@
 		AA513CBB29FD681F008FC7AA /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				AFFB3B0D2A3A4F7B00ABDD68 /* HomeCoordinator */,
 				AA513CBF29FD6833008FC7AA /* Domain */,
 				AA513CBE29FD6830008FC7AA /* Service */,
 				AA513CBD29FD682C008FC7AA /* Presentation */,
@@ -184,6 +187,7 @@
 		AA513CC329FD6BB3008FC7AA /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				AFFB3B0E2A3A4F8B00ABDD68 /* Coordinator */,
 				AA8D68E52A16464B00925C33 /* Extensions */,
 				AA513CC429FD6BD1008FC7AA /* WebService */,
 			);
@@ -215,6 +219,21 @@
 				AA8D68E62A16466400925C33 /* UIView+Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		AFFB3B0D2A3A4F7B00ABDD68 /* HomeCoordinator */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = HomeCoordinator;
+			sourceTree = "<group>";
+		};
+		AFFB3B0E2A3A4F8B00ABDD68 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				AFFB3B0F2A3A4F9900ABDD68 /* Coordinator.swift */,
+			);
+			path = Coordinator;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -320,6 +339,7 @@
 			files = (
 				AA513CC629FD6BE8008FC7AA /* HttpMethod.swift in Sources */,
 				AA513CD029FD74FA008FC7AA /* Tasking.swift in Sources */,
+				AFFB3B102A3A4F9900ABDD68 /* Coordinator.swift in Sources */,
 				AA513CD229FD78F4008FC7AA /* ServicingCEP.swift in Sources */,
 				AA513CC829FD6BFD008FC7AA /* Networking.swift in Sources */,
 				AA513CA529FD65D8008FC7AA /* AppDelegate.swift in Sources */,

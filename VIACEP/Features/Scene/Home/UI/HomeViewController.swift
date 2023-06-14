@@ -10,6 +10,15 @@ final class HomeViewController: UIViewController {
     private let viewModel: CEPViewModel
     
     // MARK: - Elements
+    private lazy var containerStackView: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.spacing = 8
+        stack.distribution = .fillProportionally
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
+    
     private lazy var inputedCepTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "CEP"
@@ -27,15 +36,6 @@ final class HomeViewController: UIViewController {
         element.addTarget(self, action: #selector(searchCep), for: .touchUpInside)
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
-    }()
-    
-    private lazy var stackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.alignment = .leading
-        stack.spacing = 8
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        return stack
     }()
     
     private lazy var bairroLabel = makeLabel()
@@ -96,7 +96,9 @@ extension HomeViewController: HomeViewControllerDisplaying {
 // MARK: - Layout Configuration
 extension HomeViewController {
     func buildViews() {
-        stackView.addStacks(
+        containerStackView.addStacks(
+            inputedCepTextField,
+            searchCepButton,
             bairroLabel,
             logradouroLabel,
             localidadeLabel,
@@ -107,63 +109,26 @@ extension HomeViewController {
             siafiLabel
         )
         
-        view.add(
-            subviews:
-            inputedCepTextField,
-            searchCepButton,
-            stackView
-        )
+        view.add(subviews: containerStackView)
+        view.layoutIfNeeded()
     }
     
     func pin() {
         NSLayoutConstraint.activate([
-            inputedCepTextField.topAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.topAnchor
+            containerStackView.topAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.topAnchor,
+                constant: Layout.Padding.genericPadding
             ),
             
-            inputedCepTextField.leadingAnchor.constraint(
+            containerStackView.leadingAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.leadingAnchor,
                 constant: Layout.Padding.genericPadding
             ),
             
-            inputedCepTextField.trailingAnchor.constraint(
+            containerStackView.trailingAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.trailingAnchor,
                 constant: -Layout.Padding.genericPadding
-            ),
-            
-            inputedCepTextField.heightAnchor.constraint(
-                equalToConstant: Layout.Padding.genericHeight
-            ),
-            
-            searchCepButton.topAnchor.constraint(
-                equalTo: inputedCepTextField.bottomAnchor,
-                constant: Layout.Padding.genericPadding
-            ),
-            
-            searchCepButton.leadingAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.leadingAnchor,
-                constant: Layout.Padding.genericPadding
-            ),
-            
-            searchCepButton.trailingAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.trailingAnchor,
-                constant: -Layout.Padding.genericPadding
-            ),
-            
-            stackView.topAnchor.constraint(
-                equalTo: searchCepButton.bottomAnchor,
-                constant: Layout.Padding.genericPadding
-            ),
-            
-            stackView.leadingAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.leadingAnchor,
-                constant: Layout.Padding.genericPadding
-            ),
-            
-            stackView.trailingAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.trailingAnchor,
-                constant: -Layout.Padding.genericPadding
-            ),
+            )
         ])
     }
     
@@ -195,10 +160,11 @@ extension HomeViewController: UITextFieldDelegate {
 // MARK: - Create Label Element
 extension HomeViewController {
     private func makeLabel() -> UILabel {
-        let element = UILabel()
-        element.font = .systemFont(ofSize: 16, weight: .regular)
-        element.translatesAutoresizingMaskIntoConstraints = false
-        return element
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 16, weight: .regular)
+        label.textColor = .label
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }
 }
 
@@ -206,6 +172,6 @@ private extension HomeViewController.Layout {
     enum Padding {
         static let genericPadding: CGFloat = 16
         static let genericValue: CGFloat = 4
-        static let genericHeight: CGFloat = 48
+        static let genericHeight: CGFloat = 40
     }
 }

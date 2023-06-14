@@ -2,6 +2,7 @@ import UIKit
 
 protocol HomeViewControllerDisplaying {
     func fetchedCEP(_ cep: String)
+    func displayInvalid( _ cep: String)
 }
 
 final class HomeViewController: UIViewController {
@@ -65,31 +66,64 @@ final class HomeViewController: UIViewController {
         configureUI()
     }
     
+    private func hideComponentsOnInvalidCEP() {
+        bairroLabel.isHidden = true
+        logradouroLabel.isHidden = true
+        localidadeLabel.isHidden = true
+        ufLabel.isHidden = true
+        ibgeLabel.isHidden = true
+        giaLabel.isHidden = true
+        dddLabel.isHidden = true
+        siafiLabel.isHidden = true
+    }
+    
+    private func showComponentsOnValidCEP() {
+        bairroLabel.isHidden = false
+        logradouroLabel.isHidden = false
+        localidadeLabel.isHidden = false
+        ufLabel.isHidden = false
+        ibgeLabel.isHidden = false
+        giaLabel.isHidden = false
+        dddLabel.isHidden = false
+        siafiLabel.isHidden = false
+    }
+    
     // MARK: - Selectors
     @objc
     private func searchCep() {
         guard let cep = inputedCepTextField.text else { return }
         fetchedCEP(cep)
+        displayInvalid(cep)
     }
 }
 // MARK: - HomeViewControllerDisplaying
 extension HomeViewController: HomeViewControllerDisplaying {
     func fetchedCEP(_ cep: String) {
         viewModel.fetchCEP(cep) { [weak self] _ in
+            guard let self = self else { return }
             DispatchQueue.main.async {
-                self?.bairroLabel.text = self?.viewModel.bairro
-                self?.localidadeLabel.text = self?.viewModel.localidade
-                self?.logradouroLabel.text = self?.viewModel.logradouro
+                self.bairroLabel.text = self.viewModel.bairro
+                self.localidadeLabel.text = self.viewModel.localidade
+                self.logradouroLabel.text = self.viewModel.logradouro
                 
-                self?.ufLabel.text = self?.viewModel.uf
-                self?.ibgeLabel.text = self?.viewModel.ibge
-                self?.giaLabel.text = self?.viewModel.gia
+                self.ufLabel.text = self.viewModel.uf
+                self.ibgeLabel.text = self.viewModel.ibge
+                self.giaLabel.text = self.viewModel.gia
                 
-                self?.dddLabel.text = self?.viewModel.ddd
-                self?.siafiLabel.text = self?.viewModel.siafi
+                self.dddLabel.text = self.viewModel.ddd
+                self.siafiLabel.text = self.viewModel.siafi
             }
         }
         inputedCepTextField.text = viewModel.clearField
+    }
+    
+    func displayInvalid(_ cep: String) {
+        viewModel.errorInvalidCep(cep) { _ in
+            let alert = UIAlertController(title: "ALERTA!", message: "O CEP \(cep) não existe.\nFavor tentar um CEP válido.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            self.hideComponentsOnInvalidCEP()
+            self.present(alert, animated: true)
+        }
     }
 }
 

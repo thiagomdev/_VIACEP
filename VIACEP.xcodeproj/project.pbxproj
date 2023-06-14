@@ -134,7 +134,6 @@
 		AA513CBB29FD681F008FC7AA /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				AFFB3B0D2A3A4F7B00ABDD68 /* HomeCoordinator */,
 				AA513CBF29FD6833008FC7AA /* Domain */,
 				AA513CBE29FD6830008FC7AA /* Service */,
 				AA513CBD29FD682C008FC7AA /* Presentation */,
@@ -219,13 +218,6 @@
 				AA8D68E62A16466400925C33 /* UIView+Extension.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		AFFB3B0D2A3A4F7B00ABDD68 /* HomeCoordinator */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = HomeCoordinator;
 			sourceTree = "<group>";
 		};
 		AFFB3B0E2A3A4F8B00ABDD68 /* Coordinator */ = {

@@ -9,7 +9,7 @@ final class HomeViewController: UIViewController {
     // MARK: - Properties
     private let viewModel: CEPViewModel
     
-    // MARK: - Elements
+    // MARK: - Components
     private lazy var containerStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
@@ -39,8 +39,8 @@ final class HomeViewController: UIViewController {
     }()
     
     private lazy var bairroLabel = makeLabel()
-    private lazy var logradouroLabel = makeLabel()
-    private lazy var localidadeLabel = makeLabel()
+    private lazy var logradouroLabel = makeLabel(font: .boldSystemFont(ofSize: 16))
+    private lazy var localidadeLabel = makeLabel(font: .boldSystemFont(ofSize: 16))
     private lazy var ufLabel = makeLabel()
     private lazy var ibgeLabel = makeLabel()
     private lazy var giaLabel = makeLabel()
@@ -108,9 +108,7 @@ extension HomeViewController {
             dddLabel,
             siafiLabel
         )
-        
         view.add(subviews: containerStackView)
-        view.layoutIfNeeded()
     }
     
     func pin() {
@@ -135,15 +133,6 @@ extension HomeViewController {
     func configureUI() {
         view.backgroundColor = .systemBackground
     }
-    
-    private func shouldReturn(_ textField: UITextField) -> Bool {
-        if textField.returnKeyType == .done {
-            guard let cep = textField.text else { return false }
-            view.endEditing(textField.text != nil)
-            fetchedCEP(cep)
-        }
-        return textField == inputedCepTextField
-    }
 }
 
 extension HomeViewController: UITextFieldDelegate {
@@ -157,14 +146,23 @@ extension HomeViewController: UITextFieldDelegate {
     }
 }
 
-// MARK: - Create Label Element
+// MARK: - HomeViewController Extensions
 extension HomeViewController {
-    private func makeLabel() -> UILabel {
+    private func makeLabel(font: UIFont = .systemFont(ofSize: 16)) -> UILabel {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .regular)
+        label.font = font
         label.textColor = .label
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
+    }
+    
+    private func shouldReturn(_ textField: UITextField) -> Bool {
+        if textField.returnKeyType == .done {
+            guard let cep = textField.text else { return false }
+            view.endEditing(textField.text != nil)
+            fetchedCEP(cep)
+        }
+        return textField == inputedCepTextField
     }
 }
 

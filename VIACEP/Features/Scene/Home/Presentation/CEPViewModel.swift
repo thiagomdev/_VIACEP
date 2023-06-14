@@ -40,22 +40,6 @@ extension CEPViewModel: CepViewModeling {
 }
 
 extension CEPViewModel {
-    var logradouro: String {
-        "Logradouro: \(cep.logradouro?.uppercased() ?? "")"
-    }
-    
-    var localidade: String {
-        "Localidade: \(cep.localidade?.uppercased() ?? "")"
-    }
-    
-    var bairro: String {
-        "Bairro: \(cep.bairro?.uppercased() ?? "")"
-    }
-    
-    var complemento: String {
-        "Complemento: \(cep.complemento ?? "")"
-    }
-    
     var uf: String {
         "UF: \(cep.uf ?? "")"
     }
@@ -78,5 +62,21 @@ extension CEPViewModel {
     
     var clearField: String? {
         nil
+    }
+    
+    var logradouro: String {
+        "Logradouro: \(cep.logradouro?.uppercased() ?? "")"
+    }
+    
+    var localidade: String {
+        "Localidade: \(cep.localidade?.uppercased() ?? "")"
+    }
+    
+    var bairro: String {
+        "Bairro: \(cep.bairro?.uppercased() ?? "")"
+    }
+    
+    var complemento: String {
+        "Complemento: \(cep.complemento ?? "")"
     }
 }

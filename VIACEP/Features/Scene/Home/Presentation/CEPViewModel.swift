@@ -1,14 +1,14 @@
 import Foundation
 
 protocol CepViewModeling {
-    func errorInvalidCep(_ errorCep: String?, completion: @escaping () -> Void)
+    func errorInvalidCep(_ invalidCep: String, callback: @escaping (Result<CEP, Error>) -> Void)
     func fetchCEP(_ cep: String, completion: @escaping (Result<CEP, Error>) -> Void)
 }
 
 final class CEPViewModel {
     private var cep: CEP
     private let service: ServicingCEPProtocol
-    var invalidCepAlert: (() -> Void)?
+    var showAlert: ((String) -> Void)?
     
     init(cep: CEP = .init(),
          service: ServicingCEPProtocol = ServiceCEP()) {
@@ -16,11 +16,10 @@ final class CEPViewModel {
         self.service = service
     }
     
-    func errorInvalidCep(_ errorCep: String?, completion: @escaping () -> Void) {
+    func errorInvalidCep(_ invalidCep: String, callback: @escaping (Result<CEP, Error>) -> Void) {
         if cep.cep == nil {
-            invalidCepAlert?()
+            callback(.success(cep))
         }
-        completion()
     }
 }
 
@@ -32,7 +31,6 @@ extension CEPViewModel: CepViewModeling {
                 self?.cep = cep
                 completion(.success(cep))
             case let .failure(err):
-                self?.invalidCepAlert?()
                 completion(.failure(err))
             }
         }

@@ -6,9 +6,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        let navigation = UINavigationController()
+        let coordinator = Coordinator(navigation: navigation)
+        
         window = UIWindow(frame: UIScreen.main.coordinateSpace.bounds)
-        window?.rootViewController = UINavigationController(rootViewController: HomeViewController(viewModel: .init()))
+        window?.rootViewController = navigation
         window?.makeKeyAndVisible()
+        
+        coordinator.perform(.home)
         return true
     }
 

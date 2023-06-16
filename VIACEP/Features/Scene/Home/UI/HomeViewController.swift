@@ -9,6 +9,7 @@ final class HomeViewController: UIViewController {
     fileprivate enum Layout { }
     // MARK: - Properties
     private let viewModel: CEPViewModel
+    private let defaults = UserDefaults.standard
     
     // MARK: - Components
     private lazy var containerStackView: UIStackView = {
@@ -92,8 +93,8 @@ final class HomeViewController: UIViewController {
     @objc
     private func searchCep() {
         guard let cep = inputedCepTextField.text else { return }
+        viewModel.displayNotifications(cep: cep)
         fetchedCEP(cep)
-        displayInvalid(cep)
     }
 }
 // MARK: - HomeViewControllerDisplaying
@@ -118,8 +119,8 @@ extension HomeViewController: HomeViewControllerDisplaying {
     }
     
     func displayInvalid(_ cep: String) {
-        viewModel.errorInvalidCep(cep) { _ in
-            let alert = UIAlertController(title: "ALERTA!", message: "O CEP \(cep) não existe.\nFavor tentar um CEP válido.", preferredStyle: .alert)
+        viewModel.invalid(cep: cep) { value in
+            let alert = UIAlertController(title: "ALERTA!", message: "O CEP \(value) não existe.\nFavor tentar um CEP válido.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default))
             self.hideComponentsOnInvalidCEP()
             self.present(alert, animated: true)

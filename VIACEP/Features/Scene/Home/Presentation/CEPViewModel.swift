@@ -1,4 +1,5 @@
 import Foundation
+import UserNotifications
 
 protocol CepViewModeling {
     func errorInvalidCep(_ invalidCep: String, callback: @escaping (Result<CEP, Error>) -> Void)
@@ -20,6 +21,28 @@ final class CEPViewModel {
         if cep.cep == nil {
             callback(.success(cep))
         }
+    }
+    
+    func invalid(cep: String, callback: @escaping (String) -> Void) {
+        if self.cep.cep == nil {
+            showAlert?(cep)
+            callback(cep)
+        }
+    }
+    
+    func displayNotifications(cep: String) {
+        let id = String(Date().timeIntervalSince1970)
+                
+        let content = UNMutableNotificationContent()
+        content.title = "Lembrete 💡"
+        content.subtitle = "Você está em -> \(notificationBairro)"
+        content.body = "Na cidade de -> \(notificationLocalidade)"
+        
+        content.categoryIdentifier = "Lembrete"
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.2, repeats: false)
+        let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request)
     }
 }
 
@@ -76,5 +99,13 @@ extension CEPViewModel {
     
     var complemento: String {
         "Complemento: \(cep.complemento ?? "")"
+    }
+    
+    var notificationBairro: String {
+        cep.bairro ?? ""
+    }
+    
+    var notificationLocalidade: String {
+        cep.localidade ?? ""
     }
 }

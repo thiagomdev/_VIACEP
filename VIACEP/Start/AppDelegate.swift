@@ -1,9 +1,11 @@
 import UIKit
+import UserNotifications
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
+    private let center = UNUserNotificationCenter.current()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let navigation = UINavigationController()
@@ -14,6 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         
         coordinator.perform(.home)
+
+        createLocalNotification(center)
+        
         return true
     }
 
@@ -23,5 +28,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
+    }
+    
+    private func createLocalNotification(_ notifications: UNUserNotificationCenter) {
+        notifications.delegate = self
+        notifications.getNotificationSettings { settings in
+            if settings.authorizationStatus == .notDetermined {
+                let options: UNAuthorizationOptions = [.alert, .sound, .badge, .carPlay]
+                notifications.requestAuthorization(options: options) { success, error in
+                    if error == nil {
+                        print(success)
+                    } else {
+                        print(error!.localizedDescription)
+                    }
+                }
+            } else if settings.authorizationStatus == .denied {
+                print("Usuario negou a notificação")
+            }
+        }
+        
+        let confirmAction = UNNotificationAction(identifier: "Confirm", title: "Fechar", options: [.foreground])
+        let category = UNNotificationCategory(identifier: "Lembrete", actions: [confirmAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", categorySummaryFormat: nil, options: [.customDismissAction])
+        notifications.setNotificationCategories([category])
+    }
+}
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        createLocalNotification(center)
+        completionHandler([.banner])
     }
 }

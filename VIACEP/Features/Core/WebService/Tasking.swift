@@ -1,6 +1,6 @@
 import Foundation
 
-final class Tasking<T: Decodable>: RequestTask {
+final class Tasking<T: Codable>: RequestTask {
     let request: Request
     
     private let completion: ((Result<T, Error>) -> Void)?

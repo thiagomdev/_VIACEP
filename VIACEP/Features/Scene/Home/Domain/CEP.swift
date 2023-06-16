@@ -1,6 +1,6 @@
 import Foundation
 
-struct CEP: Decodable, Equatable {
+struct CEP: Codable, Equatable {
     var cep: String?
     var logradouro: String?
     var complemento: String?
